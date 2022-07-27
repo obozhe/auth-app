@@ -13,9 +13,10 @@ function isOperationalError(error) {
     return false;
 }
 
-const apiErrorHandler = (error, request, response, next) => {
+// eslint-disable-next-line no-unused-vars
+const apiErrorHandler = (error, request, response, _) => {
     logError(error);
-    response.status(error.status || 400).json(error);
+    response.status(error.status || 500).json(error);
 };
 
 export { logError, isOperationalError, apiErrorHandler };
