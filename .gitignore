@@ -16,4 +16,4 @@ dist
 **/.env
 
 npm-debug.log*
-
+logs
