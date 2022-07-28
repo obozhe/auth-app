@@ -2,14 +2,10 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
 
-import connectDB from './core/db.js';
-import {
-    apiErrorHandler,
-    isOperationalError,
-    logError,
-} from './core/error-handler/error-handler.js';
-import httpLogger from './core/loggers/http-logger.js';
-import AuthorizationRoutes from './routes/authorization.js';
+import connectDB from './core/db';
+import { apiErrorHandler, isOperationalError, logError } from './core/error-handler/error-handler';
+import httpLogger from './core/loggers/http-logger';
+import AuthorizationRoutes from './routes/authorization';
 
 dotenv.config();
 

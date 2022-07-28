@@ -2,7 +2,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import Input from '../../shared/components/input';
 import { AuthenticationProps } from '../consts/authentication-props';
@@ -13,8 +13,8 @@ type Props = {
     value: string;
     startIcon: IconDefinition;
     error?: string | false;
-    onChange: (e: Event) => void;
-    onBlur?: (e: Event) => void;
+    onChange: (e: React.ChangeEvent) => void;
+    onBlur?: (e: React.FocusEvent) => void;
 };
 
 const PasswordField = ({ value, label, name, startIcon, error, onChange, onBlur }: Props) => {

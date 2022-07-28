@@ -2,12 +2,13 @@ import { faAt, faKey } from '@fortawesome/free-solid-svg-icons';
 import Button from '@mui/material/Button';
 import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
+import axios from '../../../core/axios';
 import Input from '../../../shared/components/input';
 import { AuthenticationProps } from '../../consts/authentication-props';
 import { LoginFormData } from '../../models/form-data';
-import { loginUser } from '../../services/api-service';
 import { PasswordField } from '../form-fields';
 
 const SignupSchema = Yup.object().shape({
@@ -18,47 +19,53 @@ const SignupSchema = Yup.object().shape({
         .required('Password is required'),
 });
 
-const LoginForm = () => (
-    <div>
-        <Formik
-            initialValues={{
-                [AuthenticationProps.Email]: '',
-                [AuthenticationProps.Password]: '',
-            }}
-            validationSchema={SignupSchema}
-            onSubmit={(formData: LoginFormData, actions: FormikHelpers<LoginFormData>) =>
-                loginUser(formData).finally(() => actions.setSubmitting(false))
-            }
-        >
-            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-                <form onSubmit={handleSubmit} className="grid gap-2">
-                    <Input
-                        label="Email"
-                        name={AuthenticationProps.Email}
-                        value={values[AuthenticationProps.Email]}
-                        startIcon={faAt}
-                        error={touched[AuthenticationProps.Email] && errors[AuthenticationProps.Email]}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    ></Input>
+const LoginForm = () => {
+    const navigate = useNavigate();
+    const loginUser = (formData: LoginFormData) =>
+        axios.post(`/authorization/login`, formData).then(() => navigate('/', { replace: true }));
 
-                    <PasswordField
-                        label="Password"
-                        name={AuthenticationProps.Password}
-                        value={values[AuthenticationProps.Password]}
-                        startIcon={faKey}
-                        error={touched[AuthenticationProps.Password] && errors[AuthenticationProps.Password]}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
+    return (
+        <div>
+            <Formik
+                initialValues={{
+                    [AuthenticationProps.Email]: '',
+                    [AuthenticationProps.Password]: '',
+                }}
+                validationSchema={SignupSchema}
+                onSubmit={(formData: LoginFormData, actions: FormikHelpers<LoginFormData>) =>
+                    loginUser(formData).finally(() => actions.setSubmitting(false))
+                }
+            >
+                {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+                    <form onSubmit={handleSubmit} className="grid gap-2">
+                        <Input
+                            label="Email"
+                            name={AuthenticationProps.Email}
+                            value={values[AuthenticationProps.Email]}
+                            startIcon={faAt}
+                            error={touched[AuthenticationProps.Email] && errors[AuthenticationProps.Email]}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        ></Input>
 
-                    <Button variant="contained" size="large" type="submit" disabled={isSubmitting}>
-                        Login
-                    </Button>
-                </form>
-            )}
-        </Formik>
-    </div>
-);
+                        <PasswordField
+                            label="Password"
+                            name={AuthenticationProps.Password}
+                            value={values[AuthenticationProps.Password]}
+                            startIcon={faKey}
+                            error={touched[AuthenticationProps.Password] && errors[AuthenticationProps.Password]}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+
+                        <Button variant="contained" size="large" type="submit" disabled={isSubmitting}>
+                            Login
+                        </Button>
+                    </form>
+                )}
+            </Formik>
+        </div>
+    );
+};
 
 export default LoginForm;

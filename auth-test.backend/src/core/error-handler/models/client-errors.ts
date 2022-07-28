@@ -1,10 +1,10 @@
-import { HttpStatusCodes } from '../../consts/http-status-codes.js';
-import BaseError from './base-error.js';
+import HttpStatusCodes from '../../consts/http-status-codes';
+import BaseError from './base-error';
 
 export class ApiError404 extends BaseError {
     constructor(
-        errorCode,
-        description,
+        errorCode: string,
+        description: string,
         status = HttpStatusCodes.NOT_FOUND,
         isOperational = true
     ) {
@@ -14,8 +14,8 @@ export class ApiError404 extends BaseError {
 
 export class ApiError400 extends BaseError {
     constructor(
-        errorCode,
-        description,
+        errorCode: string,
+        description: string,
         status = HttpStatusCodes.BAD_REQUEST,
         isOperational = true
     ) {

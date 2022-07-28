@@ -1,6 +1,6 @@
 import Mongoose from 'mongoose';
 
-import Roles from '../consts/roles.js';
+import Roles from '../consts/roles';
 
 const UserSchema = new Mongoose.Schema({
     email: {
@@ -29,5 +29,16 @@ const UserSchema = new Mongoose.Schema({
         required: true,
     },
 });
-const User = Mongoose.model('user', UserSchema);
-export default User;
+
+interface User {
+    _id: any;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+}
+
+const UserMongoose = Mongoose.model('user', UserSchema);
+
+export { UserMongoose, User };

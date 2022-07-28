@@ -1,4 +1,4 @@
-import { AuthErrorCodes } from './error-codes.js';
+import { AuthErrorCodes } from './error-codes';
 
 const AuthErrorMessages = Object.freeze({
     [AuthErrorCodes.INVALID_PASSWORD]: 'Password is incorrect',

@@ -1,17 +1,24 @@
 import bcrypt from 'bcryptjs';
+import express, { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { AuthErrorCodes } from '../core/consts/error-codes.js';
-import { AuthErrorMessages } from '../core/consts/error-messages.js';
-import {
-    ApiError400,
-    ApiError404,
-} from '../core/error-handler/models/client-errors.js';
-import User from '../core/models/user.js';
+import { AuthErrorCodes } from '../core/consts/error-codes';
+import { AuthErrorMessages } from '../core/consts/error-messages';
+import { ApiError400, ApiError404 } from '../core/error-handler/models/client-errors';
+import { User, UserMongoose } from '../core/models/user';
+
+type LoginUser = { email: string; password: string };
+type RegisterUser = {
+    email: string;
+    password: string;
+    lastName: string;
+    firstName: string;
+};
 
 const jwtMaxAge = 3 * 60 * 60; // 3h is sec
 
-const createJWTToken = (user) =>
+const createJWTToken = (user: User) =>
+    process.env.JWT_SECRET &&
     jwt.sign(
         {
             id: user._id,
@@ -26,9 +33,7 @@ const createJWTToken = (user) =>
         }
     );
 
-const authorizeUser = (res, user) => {
-    console.log(process.env.JWT_SECRET);
-
+const authorizeUser = (res: express.Response, user: User) => {
     const token = createJWTToken(user);
 
     res.cookie('jwt', token, {
@@ -38,8 +43,8 @@ const authorizeUser = (res, user) => {
     return res.status(200).send();
 };
 
-const findUserByEmail = async (email) => {
-    const user = await User.findOne({ email });
+const findUserByEmail = async (email: string): Promise<User> => {
+    const user = await UserMongoose.findOne({ email });
     if (!user) {
         throw new ApiError404(
             AuthErrorCodes.USER_NOT_FOUND,
@@ -50,8 +55,13 @@ const findUserByEmail = async (email) => {
     return user;
 };
 
-const createUser = async ({ email, password, lastName, firstName }) => {
-    const user = await User.create({ email, password, lastName, firstName });
+const createUser = async ({ email, password, lastName, firstName }: RegisterUser) => {
+    const user = await UserMongoose.create({
+        email,
+        password,
+        lastName,
+        firstName,
+    });
 
     if (!user) {
         throw new ApiError400(
@@ -63,7 +73,7 @@ const createUser = async ({ email, password, lastName, firstName }) => {
     return user;
 };
 
-const checkPasswordValidity = async (password, userPassword) => {
+const checkPasswordValidity = async (password: string, userPassword: string) => {
     const isValid = await bcrypt.compare(password, userPassword);
     if (!isValid) {
         throw new ApiError400(
@@ -75,8 +85,8 @@ const checkPasswordValidity = async (password, userPassword) => {
     return isValid;
 };
 
-const login = async (req, res, next) => {
-    const { email, password } = req.body;
+const login: RequestHandler = async (req, res, next) => {
+    const { email, password } = req.body as LoginUser;
     try {
         const user = await findUserByEmail(email);
         await checkPasswordValidity(password, user.password);
@@ -86,8 +96,8 @@ const login = async (req, res, next) => {
     }
 };
 
-const register = async (req, res, next) => {
-    const { password } = req.body;
+const register: RequestHandler = async (req, res, next) => {
+    const { password } = req.body as RegisterUser;
     try {
         const hash = await bcrypt.hash(password, 10);
         const user = await createUser({ ...req.body, password: hash });

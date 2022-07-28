@@ -1,7 +1,7 @@
 import morgan from 'morgan';
 import json from 'morgan-json';
 
-import logger from './logger.js';
+import logger from './logger';
 
 const format = json({
     method: ':method',
@@ -14,8 +14,7 @@ const format = json({
 const httpLogger = morgan(format, {
     stream: {
         write: (message) => {
-            const { method, url, status, contentLength, responseTime } =
-                JSON.parse(message);
+            const { method, url, status, contentLength, responseTime } = JSON.parse(message);
 
             logger.info('HTTP Access Log', {
                 timestamp: new Date().toString(),
