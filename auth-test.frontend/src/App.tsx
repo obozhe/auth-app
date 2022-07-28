@@ -1,18 +1,14 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import axiosApi from './core/axios-http-interceptor';
 import Background from './core/components/background/background';
 import Notification from './core/components/notification';
 import LoginPage from './modules/authorization/containers/login-page';
 import RegisterPage from './modules/authorization/containers/register-page';
 import AuthorizationApi from './modules/authorization/services/authorization-api';
 import HomePage from './modules/home-page/containers/home-page';
-import { RootState, store } from './store/store';
-import { UserModel } from './store/user/models/user-model';
-import { setUser } from './store/user/user.store';
+import { RootState } from './store/store';
 
 const theme = createTheme({
     palette: {

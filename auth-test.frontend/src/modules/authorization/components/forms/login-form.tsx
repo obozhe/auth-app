@@ -5,11 +5,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import axiosApi from '../../../../core/axios-http-interceptor';
 import Input from '../../../../shared/components/input';
-import { store } from '../../../../store/store';
-import { UserModel } from '../../../../store/user/models/user-model';
-import { setUser } from '../../../../store/user/user.store';
 import { AuthenticationProps } from '../../consts/authentication-props';
 import { LoginFormData } from '../../models/form-data';
 import AuthorizationApi from '../../services/authorization-api';
