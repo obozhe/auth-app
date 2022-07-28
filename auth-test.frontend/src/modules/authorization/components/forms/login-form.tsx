@@ -5,10 +5,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import axios from '../../../core/axios';
-import Input from '../../../shared/components/input';
+import axiosApi from '../../../../core/axios-http-interceptor';
+import Input from '../../../../shared/components/input';
+import { store } from '../../../../store/store';
+import { UserModel } from '../../../../store/user/models/user-model';
+import { setUser } from '../../../../store/user/user.store';
 import { AuthenticationProps } from '../../consts/authentication-props';
 import { LoginFormData } from '../../models/form-data';
+import AuthorizationApi from '../../services/authorization-api';
 import { PasswordField } from '../form-fields';
 
 const SignupSchema = Yup.object().shape({
@@ -22,7 +26,7 @@ const SignupSchema = Yup.object().shape({
 const LoginForm = () => {
     const navigate = useNavigate();
     const loginUser = (formData: LoginFormData) =>
-        axios.post(`/authorization/login`, formData).then(() => navigate('/', { replace: true }));
+        AuthorizationApi.signIn(formData).then(() => navigate('/home', { replace: true }));
 
     return (
         <div>

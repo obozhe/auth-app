@@ -1,34 +1,52 @@
-import { Route, Routes } from "react-router-dom"
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-
-import LoginPage from "./auth-page/containers/login-page"
-import RegisterPage from "./auth-page/containers/register-page"
-import Background from "./core/components/background/background"
+import axiosApi from './core/axios-http-interceptor';
+import Background from './core/components/background/background';
+import Notification from './core/components/notification';
+import LoginPage from './modules/authorization/containers/login-page';
+import RegisterPage from './modules/authorization/containers/register-page';
+import AuthorizationApi from './modules/authorization/services/authorization-api';
+import HomePage from './modules/home-page/containers/home-page';
+import { RootState, store } from './store/store';
+import { UserModel } from './store/user/models/user-model';
+import { setUser } from './store/user/user.store';
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#ba68c8',
+    palette: {
+        primary: {
+            main: '#ba68c8',
+        },
+        secondary: {
+            main: '#94a3b8',
+        },
     },
-    secondary: {
-      main: '#94a3b8',
-    },
-  },
 });
 
+AuthorizationApi.getUser();
+
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <div className="bg-gradient-to-r from-violet-500 to-fuchsia-500 absolute h-screen w-screen bottom-0 left-0 top-0 right-o flex justify-center items-center">
-        <Routes>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-        </Routes>
-      </div>
-      <Background />
-    </ThemeProvider>
-  );
+    const isAuthenticated: boolean = useSelector(({ user }: RootState) => !!user);
+
+    return (
+        <ThemeProvider theme={theme}>
+            <div className="bg-gradient-to-r from-violet-500 to-fuchsia-500 absolute h-screen w-screen bottom-0 left-0 top-0 right-o flex justify-center items-center">
+                <Routes>
+                    <Route path="" element={<Navigate to="home" />} />
+                    <Route path="home" element={isAuthenticated ? <HomePage /> : <Navigate to={`/login`} />} />
+                    <Route path="login" element={isAuthenticated ? <Navigate replace to={`/home`} /> : <LoginPage />} />
+                    <Route
+                        path="register"
+                        element={isAuthenticated ? <Navigate replace to={`/home`} /> : <RegisterPage />}
+                    />
+                </Routes>
+            </div>
+            <Notification />
+            <Background />
+        </ThemeProvider>
+    );
 }
 
 export default App;

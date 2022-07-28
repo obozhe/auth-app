@@ -31,14 +31,18 @@ const UserSchema = new Mongoose.Schema({
 });
 
 interface User {
-    _id: any;
+    id: string;
     email: string;
-    password: string;
     firstName: string;
     lastName: string;
     role: string;
 }
 
+interface UserDB extends Omit<User, 'id'> {
+    _id: any;
+    password: string;
+}
+
 const UserMongoose = Mongoose.model('user', UserSchema);
 
-export { UserMongoose, User };
+export { UserMongoose, User, UserDB };

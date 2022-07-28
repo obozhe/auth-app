@@ -1,3 +1,4 @@
+import ErrorMessages from '../../consts/error-messages';
 import HttpStatusCodes from '../../consts/http-status-codes';
 
 export default class BaseError extends Error {
@@ -6,12 +7,8 @@ export default class BaseError extends Error {
     public isOperational: boolean;
     public description: string;
 
-    constructor(
-        code: string,
-        status: HttpStatusCodes,
-        isOperational: boolean,
-        description: string
-    ) {
+    constructor(code: string, status: HttpStatusCodes, isOperational: boolean) {
+        const description = ErrorMessages[code] || 'Something went wrong';
         super(description);
 
         Object.setPrototypeOf(this, new.target.prototype);
