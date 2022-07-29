@@ -1,4 +1,4 @@
-export default Object.freeze({
-    Admin: 'Admin',
-    Basic: 'Basic',
-});
+export enum Roles {
+    Admin = 'Admin',
+    Basic = 'Basic',
+}

@@ -22,8 +22,6 @@ const notificationStoreSlice = createSlice({
     },
 });
 
-const notificationStoreReducer = notificationStoreSlice.reducer;
+export const { showNotification, onClose } = notificationStoreSlice.actions;
 
-const { showNotification, onClose } = notificationStoreSlice.actions;
-
-export { notificationStoreReducer, showNotification, onClose };
+export const notificationStoreReducer = notificationStoreSlice.reducer;

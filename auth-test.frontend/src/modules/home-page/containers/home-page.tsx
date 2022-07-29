@@ -1,22 +1,26 @@
 import Button from '@mui/material/Button';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import { RootState } from '../../../store/store';
-import { UserModel } from '../../../store/user/models/user-model';
-import AuthorizationApi from '../../authorization/services/authorization-api';
+import { UserModel } from '../../user/models/user-model';
+import UserApi from '../../user/services/user-api';
 
 const HomePage = () => {
     const user: UserModel = useSelector(({ user }: RootState) => user) as UserModel;
 
     return !user ? (
-        <Navigate replace to="/" />
+        <Navigate replace to="/sign-in" />
     ) : (
-        <div>
+        <div className="m-auto">
             <div>HI, {user.firstName}!</div>
-            <Button variant="contained" onClick={AuthorizationApi.signOut}>
+            <Button variant="contained" onClick={UserApi.signOut}>
                 Logout
             </Button>
+
+            <Link to="/admin">
+                <Button variant="contained">admin</Button>
+            </Link>
         </div>
     );
 };

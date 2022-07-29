@@ -1,6 +1,6 @@
 import { AuthenticationProps } from '../consts/authentication-props';
 
-export interface RegistrationFormData {
+export interface SignUpFormData {
     [AuthenticationProps.FirstName]: string;
     [AuthenticationProps.LastName]: string;
     [AuthenticationProps.Email]: string;
@@ -8,7 +8,7 @@ export interface RegistrationFormData {
     [AuthenticationProps.PasswordConfirmation]: string;
 }
 
-export interface LoginFormData {
+export interface SignInFormData {
     [AuthenticationProps.Email]: string;
     [AuthenticationProps.Password]: string;
 }

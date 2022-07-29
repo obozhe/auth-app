@@ -1,16 +1,16 @@
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
-import LoginForm from '../components/forms/login-form';
+import SignInForm from '../components/forms/sign-in-form';
 
-const LoginPage = () => {
+const SignInPage = () => {
     return (
-        <div className="flex flex-col max-w-md w-full">
+        <div className="flex flex-col m-auto max-w-md w-full">
             <div className="container shadow-xl bg-white rounded-lg p-4">
-                <LoginForm />
+                <SignInForm />
             </div>
             <div className="flex justify-between items-center  mt-1">
-                <Link to={'/register'}>
+                <Link to={'/sign-up'}>
                     <Button className="normal-case text-white text-opacity-80" size="small">
                         Don`t have an account?
                     </Button>
@@ -29,4 +29,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default SignInPage;

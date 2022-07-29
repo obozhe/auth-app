@@ -64,7 +64,7 @@ const Input = ({
                     onBlur && onBlur(e);
                 }}
             />
-            <FormHelperText>{error ? error : '\u00a0'}</FormHelperText>
+            <FormHelperText className="select-none">{error ? error : '\u00a0'}</FormHelperText>
         </FormControl>
     );
 };

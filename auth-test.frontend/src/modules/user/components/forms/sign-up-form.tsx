@@ -6,8 +6,8 @@ import * as yup from 'yup';
 
 import Input from '../../../../shared/components/input';
 import { AuthenticationProps } from '../../consts/authentication-props';
-import { RegistrationFormData } from '../../models/form-data';
-import AuthorizationApi from '../../services/authorization-api';
+import { SignUpFormData } from '../../models/form-data';
+import UserApi from '../../services/user-api';
 import { PasswordField } from '../form-fields';
 
 const SignupSchema = yup.object().shape({
@@ -31,10 +31,10 @@ const SignupSchema = yup.object().shape({
     [AuthenticationProps.LastName]: yup.string().min(2).max(255).required('Last name is required'),
 });
 
-const RegisterForm = () => {
+const SignUpForm = () => {
     const navigate = useNavigate();
-    const registerUser = (formData: RegistrationFormData) =>
-        AuthorizationApi.signUp(formData).then(() => navigate('/home', { replace: true }));
+    const signUp = (formData: SignUpFormData) =>
+        UserApi.signUp(formData).then(() => navigate('/home', { replace: true }));
 
     return (
         <Formik
@@ -46,8 +46,8 @@ const RegisterForm = () => {
                 [AuthenticationProps.PasswordConfirmation]: '',
             }}
             validationSchema={SignupSchema}
-            onSubmit={(formData: RegistrationFormData, actions: FormikHelpers<RegistrationFormData>) =>
-                registerUser(formData).finally(() => actions.setSubmitting(false))
+            onSubmit={(formData: SignUpFormData, actions: FormikHelpers<SignUpFormData>) =>
+                signUp(formData).finally(() => actions.setSubmitting(false))
             }
         >
             {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
@@ -111,4 +111,4 @@ const RegisterForm = () => {
     );
 };
 
-export default RegisterForm;
+export default SignUpForm;

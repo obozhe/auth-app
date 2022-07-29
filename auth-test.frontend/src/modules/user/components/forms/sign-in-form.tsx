@@ -7,8 +7,8 @@ import * as Yup from 'yup';
 
 import Input from '../../../../shared/components/input';
 import { AuthenticationProps } from '../../consts/authentication-props';
-import { LoginFormData } from '../../models/form-data';
-import AuthorizationApi from '../../services/authorization-api';
+import { SignInFormData } from '../../models/form-data';
+import UserApi from '../../services/user-api';
 import { PasswordField } from '../form-fields';
 
 const SignupSchema = Yup.object().shape({
@@ -19,10 +19,10 @@ const SignupSchema = Yup.object().shape({
         .required('Password is required'),
 });
 
-const LoginForm = () => {
+const SignInForm = () => {
     const navigate = useNavigate();
-    const loginUser = (formData: LoginFormData) =>
-        AuthorizationApi.signIn(formData).then(() => navigate('/home', { replace: true }));
+    const signIn = (formData: SignInFormData) =>
+        UserApi.signIn(formData).then(() => navigate('/home', { replace: true }));
 
     return (
         <div>
@@ -32,8 +32,8 @@ const LoginForm = () => {
                     [AuthenticationProps.Password]: '',
                 }}
                 validationSchema={SignupSchema}
-                onSubmit={(formData: LoginFormData, actions: FormikHelpers<LoginFormData>) =>
-                    loginUser(formData).finally(() => actions.setSubmitting(false))
+                onSubmit={(formData: SignInFormData, actions: FormikHelpers<SignInFormData>) =>
+                    signIn(formData).finally(() => actions.setSubmitting(false))
                 }
             >
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
@@ -68,4 +68,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default SignInForm;

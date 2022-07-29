@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import { userStoreReducer } from '../modules/user/user.store';
 import { notificationStoreReducer } from './notification/notification.store';
-import { userStoreReducer } from './user/user.store';
 
 export const store = configureStore({
     reducer: {

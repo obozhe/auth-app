@@ -1,6 +1,6 @@
 import Mongoose from 'mongoose';
 
-import Roles from '../consts/roles';
+import { Roles } from '../consts/roles';
 
 const UserSchema = new Mongoose.Schema({
     email: {
@@ -35,12 +35,13 @@ interface User {
     email: string;
     firstName: string;
     lastName: string;
-    role: string;
+    role: Roles;
 }
 
-interface UserDB extends Omit<User, 'id'> {
+interface UserDB extends Omit<User, 'id' | 'role'> {
     _id: any;
     password: string;
+    role: string;
 }
 
 const UserMongoose = Mongoose.model('user', UserSchema);

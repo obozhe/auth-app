@@ -12,8 +12,6 @@ const userStoreSlice = createSlice<UserModel | null, SliceCaseReducers<UserModel
     },
 });
 
-const { setUser } = userStoreSlice.actions;
+export const { setUser } = userStoreSlice.actions;
 
-const userStoreReducer = userStoreSlice.reducer;
-
-export { setUser, userStoreReducer };
+export const userStoreReducer = userStoreSlice.reducer;
