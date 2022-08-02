@@ -3,6 +3,13 @@ enum AuthErrorCodes {
     USER_NOT_FOUND = 'USER_NOT_FOUND',
     USER_CREATION_FAILED = 'USER_CREATION_FAILED',
     NOT_AUTHORIZED = 'NOT_AUTHORIZED',
+    INVALID_VERIFICATION_TOKEN = 'INVALID_VERIFICATION_TOKEN',
+    EMAIL_NOT_UNIQUE = 'EMAIL_NOT_UNIQUE',
+    EMAIL_IS_VERIFIED = 'EMAIL_IS_VERIFIED',
 }
 
-export { AuthErrorCodes };
+enum MailerErrorCodes {
+    MAIL_NOT_SENT = 'MAIL_NOT_SENT',
+}
+
+export { AuthErrorCodes, MailerErrorCodes };

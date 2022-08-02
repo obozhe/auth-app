@@ -14,7 +14,7 @@ axiosApi.interceptors.response.use(
             store.dispatch(
                 showNotification({
                     type: NotificationTypes.Error,
-                    message: error.description,
+                    message: error.description || 'Oops... Something went wrong',
                 })
             );
         }

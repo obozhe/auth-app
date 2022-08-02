@@ -7,8 +7,12 @@ export default class BaseError extends Error {
     public isOperational: boolean;
     public description: string;
 
-    constructor(code: string, status: HttpStatusCodes, isOperational: boolean) {
-        const description = ErrorMessages[code] || 'Something went wrong';
+    constructor(
+        code: string,
+        status: HttpStatusCodes = HttpStatusCodes.INTERNAL_ERROR,
+        isOperational = true,
+        description = ErrorMessages[code] || 'Something went wrong'
+    ) {
         super(description);
 
         Object.setPrototypeOf(this, new.target.prototype);

@@ -10,7 +10,7 @@ const SignInPage = () => {
                 <SignInForm />
             </div>
             <div className="flex justify-between items-center  mt-1">
-                <Link to={'/sign-up'}>
+                <Link to="../sign-up">
                     <Button className="normal-case text-white text-opacity-80" size="small">
                         Don`t have an account?
                     </Button>

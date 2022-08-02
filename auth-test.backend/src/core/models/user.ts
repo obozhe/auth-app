@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import Mongoose from 'mongoose';
 
 import { Roles } from '../consts/roles';
@@ -28,9 +29,13 @@ const UserSchema = new Mongoose.Schema({
         default: Roles.Basic,
         required: true,
     },
+    verified: {
+        type: Boolean,
+        default: false,
+    },
 });
 
-interface User {
+interface UserToken {
     id: string;
     email: string;
     firstName: string;
@@ -38,12 +43,13 @@ interface User {
     role: Roles;
 }
 
-interface UserDB extends Omit<User, 'id' | 'role'> {
+interface User extends Omit<UserToken, 'id' | 'role'> {
     _id: any;
     password: string;
     role: string;
+    verified: boolean;
 }
 
 const UserMongoose = Mongoose.model('user', UserSchema);
 
-export { UserMongoose, User, UserDB };
+export { UserMongoose, UserToken, User };

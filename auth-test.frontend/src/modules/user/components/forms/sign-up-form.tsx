@@ -74,6 +74,7 @@ const SignUpForm = () => {
                     </div>
                     <Input
                         label="Email"
+                        type="email"
                         name={AuthenticationProps.Email}
                         value={values[AuthenticationProps.Email]}
                         startIcon={faAt}

@@ -41,6 +41,7 @@ const SignInForm = () => {
                         <Input
                             label="Email"
                             name={AuthenticationProps.Email}
+                            type="email"
                             value={values[AuthenticationProps.Email]}
                             startIcon={faAt}
                             error={touched[AuthenticationProps.Email] && errors[AuthenticationProps.Email]}

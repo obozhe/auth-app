@@ -11,6 +11,7 @@ router.route('/list').get(isAdmin, UserController.getUserList);
 router.route('/login').post(UserController.login);
 router.route('/logout').post(isUser, UserController.logout);
 router.route('/create').post(UserController.create);
+router.route('/verify').post(UserController.verify);
 
 router.route('/list/remove').put(isAdmin, UserController.remove);
 

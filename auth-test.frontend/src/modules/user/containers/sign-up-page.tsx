@@ -9,7 +9,7 @@ const SignUpPage = () => {
             <div className="container shadow-xl bg-white rounded-lg p-4">
                 <RegisterForm />
             </div>
-            <Link className="w-fit mx-auto mt-3" to={'/sign-in'}>
+            <Link className="w-fit mx-auto mt-3" to="..">
                 <Button className="normal-case font-light w-fit text-white text-opacity-80" size="small">
                     Back to Login
                 </Button>

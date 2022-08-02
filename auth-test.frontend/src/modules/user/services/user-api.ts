@@ -12,12 +12,17 @@ const signUp = (formData: SignUpFormData) =>
 
 const signOut = () => axiosApi.post('/user/logout').then(() => store.dispatch(setUser(null)));
 
+const verify = (userId: string, token: string) =>
+    axiosApi
+        .post<UserModel, UserModel>(`/user/verify`, { userId, token })
+        .then((user) => store.dispatch(setUser(user)));
+
 const fetchUser = () => axiosApi.get<UserModel, UserModel>(`/user`).then((user) => store.dispatch(setUser(user)));
 
 const getUsersList = () => axiosApi.get<UserModel[], UserModel[]>(`/user/list`);
 
 const deleteUsers = (ids: string[]) => axiosApi.put<UserModel[], UserModel[]>(`/user/list/remove`, { ids });
 
-const UserApi = { signIn, signOut, signUp, fetchUser, deleteUsers, getUsersList };
+const UserApi = { signIn, signOut, signUp, fetchUser, deleteUsers, getUsersList, verify };
 
 export default UserApi;

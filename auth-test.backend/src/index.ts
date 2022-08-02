@@ -2,7 +2,6 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
 
-import { createAdmin } from './controllers/user-controller';
 import connectDB from './core/db';
 import { apiErrorHandler, isOperationalError, logError } from './core/error-handler/error-handler';
 import httpLogger from './core/loggers/http-logger';
@@ -26,6 +25,11 @@ app.listen(port, () => {
 });
 
 // createAdmin();
+// createUserMock(100);
+// (async () => {
+//     await UserMongoose.deleteMany({});
+//     await Token.deleteMany({});
+// })();
 
 process.on('uncaughtException', (error) => {
     logError(error);

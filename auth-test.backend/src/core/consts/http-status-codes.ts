@@ -3,7 +3,7 @@ enum HttpStatusCodes {
     BAD_REQUEST = 400,
     NOT_AUTHORIZED = 401,
     NOT_FOUND = 404,
-    INTERNAL_SERVER = 500,
+    INTERNAL_ERROR = 500,
 }
 
 export default HttpStatusCodes;

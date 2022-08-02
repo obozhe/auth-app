@@ -18,7 +18,9 @@ $pkT: hsla(0, 60%, 75%, 0);
 
 .cat {
     margin: auto;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
     transform: scale(-50%) rotate(200deg);
 
     &__segment {

@@ -1,11 +1,14 @@
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import express, { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { AuthErrorCodes } from '../core/consts/error-codes';
 import { Roles } from '../core/consts/roles';
 import { ApiError400, ApiError401, ApiError404 } from '../core/error-handler/models/client-errors';
-import { User, UserDB, UserMongoose } from '../core/models/user';
+import Token from '../core/models/token';
+import { User, UserMongoose, UserToken } from '../core/models/user';
+import MailerController from './mailer-controller';
 
 type LoginUser = { email: string; password: string };
 type RegisterUser = {
@@ -17,7 +20,7 @@ type RegisterUser = {
 
 const jwtMaxAge = 3 * 60 * 60; // 3h is sec
 
-const convertUserDBToUserModel = (user: UserDB): User => ({
+const convertUserToToken = (user: User): UserToken => ({
     id: user._id,
     email: user.email,
     role: user.role as Roles,
@@ -25,18 +28,18 @@ const convertUserDBToUserModel = (user: UserDB): User => ({
     firstName: user.firstName,
 });
 
-const createJWTToken = (user: User) =>
+const createJWTToken = (user: UserToken) =>
     process.env.JWT_SECRET && jwt.sign(user, process.env.JWT_SECRET, { expiresIn: jwtMaxAge });
 
-const authorizeUser = (res: express.Response, user: UserDB) => {
-    const userData = convertUserDBToUserModel(user);
+const authorizeUser = (res: express.Response, user: User) => {
+    const userData = convertUserToToken(user);
     const token = createJWTToken(userData);
 
     res.cookie('jwt', token, { httpOnly: true });
     return res.status(200).send(userData);
 };
 
-const findUserByEmail = async (email: string): Promise<UserDB> => {
+const findUserByEmail = async (email: string): Promise<User> => {
     const user = await UserMongoose.findOne({ email });
     if (!user) {
         throw new ApiError404(AuthErrorCodes.USER_NOT_FOUND);
@@ -46,12 +49,7 @@ const findUserByEmail = async (email: string): Promise<UserDB> => {
 };
 
 const createUser = async ({ email, password, lastName, firstName }: RegisterUser) => {
-    const user = await UserMongoose.create({
-        email,
-        password,
-        lastName,
-        firstName,
-    });
+    const user = await UserMongoose.create({ email, password, lastName, firstName });
 
     if (!user) {
         throw new ApiError400(AuthErrorCodes.USER_CREATION_FAILED);
@@ -79,7 +77,7 @@ const isJWTContainsRoles = (roles: Roles[], token: string) => {
         if (err) {
             throw new ApiError401(AuthErrorCodes.NOT_AUTHORIZED);
         } else {
-            const { role } = decodedToken as User;
+            const { role } = decodedToken as UserToken;
             if (roles.includes(role)) {
                 isValid = true;
             } else {
@@ -107,6 +105,46 @@ const create: RequestHandler = async (req, res, next) => {
     try {
         const hash = await bcrypt.hash(password, 10);
         const user = await createUser({ ...req.body, password: hash });
+
+        if (user) {
+            const token = await Token.create({
+                userId: user._id,
+                token: crypto.randomBytes(32).toString('hex'),
+            });
+
+            const options = {
+                to: user.email,
+                subject: 'Email Verification',
+                html: `<p>Click <a href="http://${process.env.BASE_URL}/user/verify/${user._id}/${token.token}">here</a> to verify your email</p>`,
+            };
+
+            await MailerController.send(options);
+            res.status(200).send();
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+const verify: RequestHandler = async (req, res, next) => {
+    try {
+        const user: User | null = await UserMongoose.findById(req.body.userId);
+        if (!user) {
+            throw new ApiError404(AuthErrorCodes.USER_NOT_FOUND);
+        }
+
+        if (user.verified) {
+            throw new ApiError400(AuthErrorCodes.EMAIL_IS_VERIFIED);
+        }
+
+        const token = await Token.findOne({ userId: user._id, token: req.body.token });
+        if (!token) {
+            throw new ApiError400(AuthErrorCodes.INVALID_VERIFICATION_TOKEN);
+        }
+
+        await UserMongoose.updateOne({ _id: user._id, verified: true });
+        await Token.findByIdAndRemove(token._id);
+
         authorizeUser(res, user);
     } catch (error) {
         next(error);
@@ -146,8 +184,7 @@ const getCurrentUser: RequestHandler = (req, res, next) => {
                 throw new ApiError401(AuthErrorCodes.NOT_AUTHORIZED);
             }
 
-            const { email, firstName, id, lastName, role } = decodedToken as User;
-            return res.status(200).json({ email, firstName, id, lastName, role });
+            return res.status(200).json(decodedToken);
         });
     } catch (error) {
         next(error);
@@ -157,7 +194,7 @@ const getCurrentUser: RequestHandler = (req, res, next) => {
 const getUserList: RequestHandler = async (req, res, next) => {
     try {
         const users = await UserMongoose.find();
-        return res.status(200).json(users.map(convertUserDBToUserModel));
+        return res.status(200).json(users.map(convertUserToToken));
     } catch (error) {
         next(error);
     }
@@ -197,4 +234,35 @@ const createAdmin = async () => {
     });
 };
 
-export { login, logout, create, remove, getCurrentUser, getUserList, isUser, isAdmin, createAdmin };
+const createUserMock = async (count: number) => {
+    const hash = await bcrypt.hash('password', 10);
+    for (let i = 0; i < count; i++) {
+        const random = Math.round(10000 - 0.5 + Math.random() * (10000000 - 10000 + 1));
+
+        try {
+            await UserMongoose.create({
+                firstName: 'Narek',
+                lastName: 'Avagian',
+                role: Roles.Basic,
+                email: random + '_user@g.com',
+                password: hash,
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+};
+
+export {
+    login,
+    logout,
+    create,
+    verify,
+    remove,
+    getCurrentUser,
+    getUserList,
+    isUser,
+    isAdmin,
+    createAdmin,
+    createUserMock,
+};
