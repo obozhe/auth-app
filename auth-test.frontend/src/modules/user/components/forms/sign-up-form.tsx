@@ -34,7 +34,7 @@ const SignupSchema = yup.object().shape({
 const SignUpForm = () => {
     const navigate = useNavigate();
     const signUp = (formData: SignUpFormData) =>
-        UserApi.signUp(formData).then(() => navigate('/home', { replace: true }));
+        UserApi.signUp(formData).then(() => navigate('../email-verification-is-sent'));
 
     return (
         <Formik

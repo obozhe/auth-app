@@ -1,5 +1,5 @@
-import ErrorMessages from '../../consts/error-messages';
-import HttpStatusCodes from '../../consts/http-status-codes';
+import HttpStatusCodes from '../../core/consts/http-status-codes';
+import ErrorMessages from '../consts/error-messages';
 
 export default class BaseError extends Error {
     public code: string;

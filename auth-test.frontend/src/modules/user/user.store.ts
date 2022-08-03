@@ -1,14 +1,14 @@
 import { PayloadAction, SliceCaseReducers, createSlice } from '@reduxjs/toolkit';
 
-import { UserModel } from './models/user-model';
+import { UserDto } from './models/user';
 
-const initialState: UserModel | null = null;
+const initialState: UserDto | null = null;
 
-const userStoreSlice = createSlice<UserModel | null, SliceCaseReducers<UserModel | null>, string>({
+const userStoreSlice = createSlice<UserDto | null, SliceCaseReducers<UserDto | null>, string>({
     name: 'user',
     initialState,
     reducers: {
-        setUser: (state, action: PayloadAction<UserModel>) => action.payload,
+        setUser: (state, action: PayloadAction<UserDto>) => action.payload,
     },
 });
 

@@ -1,0 +1,16 @@
+body {
+    overflow: hidden;
+}
+
+#root {
+    @apply w-screen h-screen;
+    overflow: hidden;
+}
+
+.square-icon-button {
+    @apply min-w-fit w-9 h-9 p-0 #{!important};
+}
+
+.font-gothic {
+    font-family: 'Pathway Gothic One', sans-serif;
+}

@@ -1,7 +1,7 @@
 import { ErrorRequestHandler } from 'express';
 
-import HttpStatusCodes from '../consts/http-status-codes';
-import logger from '../loggers/logger';
+import HttpStatusCodes from '../core/consts/http-status-codes';
+import logger from '../core/loggers/logger';
 import BaseError from './models/base-error';
 
 function logError(error: any) {
@@ -19,7 +19,6 @@ function isOperationalError(error: any) {
 // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
 const apiErrorHandler: ErrorRequestHandler = (error, request, response, _) => {
     logError(error);
-    console.log();
 
     switch (true) {
         case error.name === 'MongoServerError' && error.code === 11000:
@@ -29,7 +28,7 @@ const apiErrorHandler: ErrorRequestHandler = (error, request, response, _) => {
             break;
 
         default:
-            response.status(error.status).json(error);
+            response.status(error.status || 500).json(error);
             break;
     }
 };

@@ -1,4 +1,5 @@
-import { Paper } from '@mui/material';
+import { faCheckCircle, faXmarkCircle } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -13,9 +14,11 @@ const VerificationPage = () => {
     const [error, setError] = useState<ErrorDto | null>(null);
 
     useEffect(() => {
-        if (userId && token) {
+        if (!userId || !token) {
+            navigate('/', { replace: true });
+        } else {
             UserApi.verify(userId, token)
-                .then(() => setTimeout(() => navigate('/home', { replace: true }), 3000))
+                .then(() => setTimeout(() => navigate('/', { replace: true }), 3000))
                 .catch((e) => setError(e))
                 .finally(() => setIsLoading(false));
         }
@@ -25,17 +28,15 @@ const VerificationPage = () => {
         <CatSpinner />
     ) : (
         <div className="w-full flex flex-col justify-center items-center text-white">
-            {error ? (
-                <Paper className="p-4 bg-error text-white">
-                    <h1 className="text-2xl bold">Something went wrong</h1>
-                    <p>{error.description}</p>
-                </Paper>
-            ) : (
-                <>
-                    <h1 className="text-2xl bold">Email is verified!</h1>
-                    <p>You will be redirected to the home page soon</p>
-                </>
-            )}
+            <div className={`p-4 rounded-xl  shadow-xl text-soft-white ${error ? 'bg-error' : 'bg-success'}`}>
+                <div className="grid grid-cols-[auto_auto] gap-4 items-center">
+                    <FontAwesomeIcon size="3x" icon={error ? faXmarkCircle : faCheckCircle} />
+                    <div>
+                        <h1 className="text-2xl bold">{error ? 'Something went wrong' : 'Email is verified!'}</h1>
+                        <p>{error ? error.description : 'You will be redirected to the home page soon'}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

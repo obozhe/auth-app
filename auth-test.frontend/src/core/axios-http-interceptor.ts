@@ -1,25 +1,19 @@
 import axios from 'axios';
 
-import { NotificationTypes } from '../store/notification/consts/notification-types';
-import { showNotification } from '../store/notification/notification.store';
-import { store } from '../store/store';
+import { ErrorDto } from './models/error-dto';
+import snackbar from './snackbar';
 
 const axiosApi = axios.create({ baseURL: `/api` });
 
 axiosApi.interceptors.response.use(
     (response) => response.data,
     (err) => {
-        const error = err.response.data;
-        if (error.code !== 'NOT_AUTHORIZED') {
-            store.dispatch(
-                showNotification({
-                    type: NotificationTypes.Error,
-                    message: error.description || 'Oops... Something went wrong',
-                })
-            );
+        const errorDto: ErrorDto = err.response.data;
+        if (errorDto.code !== 'NOT_AUTHORIZED') {
+            snackbar.error(errorDto.description || 'Oops... Something went wrong');
         }
 
-        return Promise.reject(error);
+        return Promise.reject(errorDto);
     }
 );
 

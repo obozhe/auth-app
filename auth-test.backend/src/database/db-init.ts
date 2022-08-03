@@ -1,10 +1,12 @@
 import Mongoose, { ConnectOptions } from 'mongoose';
 
 const connectDB = async () => {
-    const localDB = process.env.DB_URL || '';
+    if (!process.env.MONGO_URL) {
+        throw new Error('MongoDB URL is not set');
+    }
 
     await Mongoose.connect(
-        localDB,
+        process.env.MONGO_URL,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,

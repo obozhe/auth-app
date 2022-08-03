@@ -4,14 +4,10 @@ import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Background from './core/components/background/background';
-import Header from './core/components/header';
-import Notification from './core/components/notification';
-import AdminPage from './modules/admin-page/containers/admin-page';
+import ContainerWithHeader from './core/containers/container-with-header';
+import AdminRoutes from './modules/admin-page/routes';
 import HomePage from './modules/home-page/containers/home-page';
-import { UserRoles } from './modules/user/consts/user-roles';
-import SignInPage from './modules/user/containers/sign-in-page';
-import SignUpPage from './modules/user/containers/sign-up-page';
-import VerificationPage from './modules/user/containers/verification-page';
+import UserRoutes from './modules/user/routes';
 import UserApi from './modules/user/services/user-api';
 import { CatSpinner } from './shared/components/cat-spinner/cat-spinner';
 import GuardedRoute from './shared/components/guarded-route';
@@ -31,7 +27,6 @@ const theme = createTheme({
 function App() {
     const [isLoading, setIsLoading] = useState(true);
     const user = useSelector(({ user }: RootState) => user);
-    const isAdmin = user?.role === UserRoles.Admin;
 
     useEffect(() => {
         UserApi.fetchUser().finally(() => setIsLoading(false));
@@ -39,56 +34,27 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <div className="flex flex-col relative w-full h-full">
-                <Header />
+            <div className="relative w-screen h-screen overflow-hidden">
                 {isLoading ? (
                     <CatSpinner />
                 ) : (
-                    <div className="max-w-[1600px] h-full w-full mx-auto flex">
-                        <Routes>
-                            <Route path="" element={<Navigate to={!user ? 'user' : 'home'} />} />
-                            <Route
-                                path="home"
-                                element={
-                                    <GuardedRoute isAllowed={!!user} redirectTo="/user">
+                    <Routes>
+                        <Route
+                            path=""
+                            element={
+                                <GuardedRoute isAllowed={!!user} redirectTo="/user">
+                                    <ContainerWithHeader>
                                         <HomePage />
-                                    </GuardedRoute>
-                                }
-                            />
-                            <Route
-                                path="admin"
-                                element={
-                                    <GuardedRoute isAllowed={isAdmin} redirectTo="/user">
-                                        <AdminPage />
-                                    </GuardedRoute>
-                                }
-                            />
-                            <Route path="user">
-                                <Route path="" element={<Navigate to="sign-in" />} />
-                                <Route
-                                    path="sign-in"
-                                    element={
-                                        <GuardedRoute isAllowed={!user} redirectTo="/home">
-                                            <SignInPage />
-                                        </GuardedRoute>
-                                    }
-                                />
-                                <Route
-                                    path="sign-up"
-                                    element={
-                                        <GuardedRoute isAllowed={!user} redirectTo="/home">
-                                            <SignUpPage />
-                                        </GuardedRoute>
-                                    }
-                                />
-                                <Route path="verify/:userId/:token" element={<VerificationPage />} />
-                            </Route>
-                            <Route path="*" element={<Navigate to="/" />} />
-                        </Routes>
-                    </div>
+                                    </ContainerWithHeader>
+                                </GuardedRoute>
+                            }
+                        />
+                        <Route path="admin">{AdminRoutes(user)}</Route>
+                        <Route path="user">{UserRoutes(user)}</Route>
+                        <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
                 )}
             </div>
-            <Notification />
             <Background />
         </ThemeProvider>
     );

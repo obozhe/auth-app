@@ -1,4 +1,4 @@
-import { faArrowRightFromBracket, faCross, faCrown, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faCrown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper, Tooltip } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -10,7 +10,6 @@ import { UserRoles } from '../../modules/user/consts/user-roles';
 import UserApi from '../../modules/user/services/user-api';
 import Avatar from '../../shared/components/avatar';
 import { RootState } from '../../store/store';
-import './header.scss';
 
 const Header = () => {
     const user = useSelector(({ user }: RootState) => user);

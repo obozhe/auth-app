@@ -13,6 +13,7 @@ router.route('/logout').post(isUser, UserController.logout);
 router.route('/create').post(UserController.create);
 router.route('/verify').post(UserController.verify);
 
-router.route('/list/remove').put(isAdmin, UserController.remove);
+router.route('/deleteMany').put(isAdmin, UserController.remove);
+router.route('/banMany').put(isAdmin, UserController.ban);
 
 export default router;

@@ -2,9 +2,13 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import express from 'express';
 
-import connectDB from './core/db';
-import { apiErrorHandler, isOperationalError, logError } from './core/error-handler/error-handler';
+import { createAdmin, createUserMock } from './controllers/user-controller';
 import httpLogger from './core/loggers/http-logger';
+import connectDB from './database/db-init';
+import { BannedUserModel } from './database/models/banned-user';
+import { UserModel } from './database/models/user';
+import { UserVerificationTokenModel } from './database/models/user-verification-token';
+import { apiErrorHandler, isOperationalError, logError } from './error/error-handler';
 import AuthorizationRoutes from './routes/user';
 
 dotenv.config();
@@ -24,12 +28,13 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
 
+// (async () => {
+//     await UserModel.deleteMany({});
+//     await UserVerificationTokenModel.deleteMany({});
+//     await BannedUserModel.deleteMany({});
+// })();
 // createAdmin();
 // createUserMock(100);
-// (async () => {
-//     await UserMongoose.deleteMany({});
-//     await Token.deleteMany({});
-// })();
 
 process.on('uncaughtException', (error) => {
     logError(error);

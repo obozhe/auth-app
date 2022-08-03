@@ -21,8 +21,7 @@ const SignupSchema = Yup.object().shape({
 
 const SignInForm = () => {
     const navigate = useNavigate();
-    const signIn = (formData: SignInFormData) =>
-        UserApi.signIn(formData).then(() => navigate('/home', { replace: true }));
+    const signIn = (formData: SignInFormData) => UserApi.signIn(formData).then(() => navigate('/', { replace: true }));
 
     return (
         <div>
