@@ -1,11 +1,11 @@
 import { Navigate, Route } from 'react-router-dom';
 
 import GuardedRoute from '../../shared/components/GuardedRoute';
-import SignInPage from './containers/sign-in-page';
-import SignUpPage from './containers/sign-up-page';
-import VerificationMailSentPage from './containers/verification-mail-sent-page';
-import VerificationPage from './containers/verification-page';
-import { UserDto } from './models/user';
+import SignInPage from './containers/SignInPage';
+import SignUpPage from './containers/SignUpPage';
+import VerificationMailSentPage from './containers/VerificationMailSentPage';
+import VerificationPage from './containers/VerificationPage';
+import { UserDto } from './models/User';
 
 const UserRoutes = (user: UserDto | null) => (
     <>

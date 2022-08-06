@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import React, { useState } from 'react';
 
 import Input from '../../../shared/components/Input';
-import { AuthenticationProps } from '../consts/authentication-props';
+import { AuthenticationProps } from '../consts/AuthenticationProps';
 
 type Props = {
     name: AuthenticationProps;

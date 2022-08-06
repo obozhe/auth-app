@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { ErrorDto } from '../../../core/models/error-dto';
+import { ErrorDto } from '../../../core/models/ErrorDto';
 import { CatSpinner } from '../../../shared/components/CatSpinner/CatSpinner';
-import UserApi from '../services/user-api';
+import UserApi from '../services/api/UserApi';
 
 const VerificationPage = () => {
     const { userId, token } = useParams();

@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
-import SignInForm from '../components/forms/sign-in-form';
+import SignInForm from '../components/forms/SignInForm';
 
 const SignInPage = () => {
     return (

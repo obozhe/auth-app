@@ -1,4 +1,4 @@
-import './background.scss';
+import './Background.scss';
 
 const Background = () => (
     <div className="h-screen w-screen absolute top-0 left-0 bg-gradient-to-r from-violet-500 to-fuchsia-500 -z-10">

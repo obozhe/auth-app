@@ -1,4 +1,4 @@
-import { UserRoles } from '../consts/user-roles';
+import { UserRoles } from '../consts/UserRoles';
 
 export interface UserDto {
     email: string;
@@ -8,5 +8,4 @@ export interface UserDto {
     role: UserRoles;
     lastLogin: string;
     createdAt: string;
-    banned?: false;
 }

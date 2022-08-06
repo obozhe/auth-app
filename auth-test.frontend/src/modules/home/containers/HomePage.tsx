@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { RootState } from '../../../store/store';
-import { UserDto } from '../../user/models/user';
+import { UserDto } from '../../user/models/User';
 
 const HomePage = () => {
     const user: UserDto = useSelector(({ user }: RootState) => user) as UserDto;

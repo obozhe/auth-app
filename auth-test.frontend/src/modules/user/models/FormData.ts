@@ -1,4 +1,4 @@
-import { AuthenticationProps } from '../consts/authentication-props';
+import { AuthenticationProps } from '../consts/AuthenticationProps';
 
 export interface SignUpFormData {
     [AuthenticationProps.FirstName]: string;

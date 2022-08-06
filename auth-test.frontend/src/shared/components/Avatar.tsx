@@ -1,6 +1,6 @@
 import { Avatar as MuiAvatar } from '@mui/material';
 
-import { stringToColor } from '../helpers/string-to-color';
+import { stringToColor } from '../helpers/stringToColor.helper';
 
 const stringAvatar = (name: string) => ({
     sx: { bgcolor: stringToColor(name) },

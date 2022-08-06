@@ -1,6 +1,6 @@
 import { PayloadAction, SliceCaseReducers, createSlice } from '@reduxjs/toolkit';
 
-import { UserDto } from './models/user';
+import { UserDto } from './models/User';
 
 const initialState: UserDto | null = null;
 

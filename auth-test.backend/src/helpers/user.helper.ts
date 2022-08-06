@@ -11,7 +11,7 @@ import { ApiError400, ApiError401, ApiError403, ApiError404 } from '../error/mod
 
 const jwtMaxAge: number = 3 * 60 * 60; // 3h is sec
 
-export const convertUserToDto = (user: IUser, banned?: boolean): UserDto => ({
+export const convertUserToDto = (user: IUser): UserDto => ({
     id: String(user._id),
     email: user.email,
     role: user.role as Roles,
@@ -19,7 +19,6 @@ export const convertUserToDto = (user: IUser, banned?: boolean): UserDto => ({
     firstName: user.firstName,
     lastLogin: user.lastLogin,
     createdAt: user.createdAt,
-    ...(banned !== undefined ? { banned } : {}),
 });
 
 export const createJWTToken = (user: UserDto): string => {

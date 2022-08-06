@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
-import RegisterForm from '../components/forms/sign-up-form';
+import RegisterForm from '../components/forms/SignUpForm';
 
 const SignUpPage = () => {
     return (

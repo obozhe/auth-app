@@ -5,7 +5,7 @@ import { isAdmin } from '../middlewares/user-role-check';
 
 const AdminRouter = express.Router();
 
-AdminRouter.route('/users').get(isAdmin, AdminController.getUsers);
+AdminRouter.route('/users').post(isAdmin, AdminController.getUsers);
 
 AdminRouter.route('/users/delete').patch(isAdmin, AdminController.deleteUsers);
 AdminRouter.route('/users/ban').patch(isAdmin, AdminController.banUsers);

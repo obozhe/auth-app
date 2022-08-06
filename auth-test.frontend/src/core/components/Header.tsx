@@ -6,8 +6,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { UserRoles } from '../../modules/user/consts/user-roles';
-import UserApi from '../../modules/user/services/user-api';
+import { UserRoles } from '../../modules/user/consts/UserRoles';
+import UserApi from '../../modules/user/services/api/UserApi';
 import Avatar from '../../shared/components/Avatar';
 import { RootState } from '../../store/store';
 

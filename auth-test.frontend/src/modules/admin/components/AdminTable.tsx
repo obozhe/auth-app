@@ -1,20 +1,18 @@
-import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { faBan } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BlockIcon from '@mui/icons-material/Block';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import RestoreIcon from '@mui/icons-material/Restore';
-import Button from '@mui/material/Button';
 import { DataGrid, GridRowParams, GridSelectionModel } from '@mui/x-data-grid';
 import React from 'react';
 
-import IconButton from '../../../../shared/components/IconButton';
-import { isAdmin } from '../../../user/helpers/user.helper';
-import { UserDto } from '../../../user/models/user';
-import AdminColumns from '../consts/columns';
+import IconButton from '../../../shared/components/IconButton';
+import { isAdmin } from '../../user/helpers/user.helper';
+import { UserDto } from '../../user/models/User';
+import adminColumns from '../consts/columns';
 
 type Props = {
     rows: UserDto[];
+    isBanListView: boolean;
+    isLoading: boolean;
     onDeleteUser: (id: string) => void;
     onBanUser: (id: string) => void;
     onUnBanUser: (id: string) => void;
@@ -33,7 +31,15 @@ const getRowClass = (params: GridRowParams) => {
     return '';
 };
 
-const AdminTable = ({ rows, onDeleteUser, onBanUser, onUnBanUser, onSelectionChange }: Props) => {
+const AdminTable = ({
+    rows,
+    isLoading,
+    isBanListView,
+    onDeleteUser,
+    onBanUser,
+    onUnBanUser,
+    onSelectionChange,
+}: Props) => {
     const ActionsCell = {
         field: 'actions',
         type: 'actions',
@@ -46,26 +52,27 @@ const AdminTable = ({ rows, onDeleteUser, onBanUser, onUnBanUser, onSelectionCha
                 color="error"
                 onClick={() => onDeleteUser(params.row.id)}
             >
-                <DeleteIcon />
+                <DeleteIcon className="w-5 h-5" />
             </IconButton>,
             <IconButton
-                title={params.row.banned ? 'Unban User' : 'Ban User'}
+                title={isBanListView ? 'Unban User' : 'Ban User'}
                 key="ban"
-                disabled={isAdmin(params.row)}
                 className="square-icon-button"
                 color="error"
-                onClick={() => (params.row.banned ? onUnBanUser(params.row.id) : onBanUser(params.row.id))}
+                disabled={isAdmin(params.row)}
+                onClick={() => (isBanListView ? onUnBanUser(params.row.id) : onBanUser(params.row.id))}
             >
-                {params.row.banned ? <RestoreIcon /> : <BlockIcon />}
+                {isBanListView ? <RestoreIcon className="w-5 h-5" /> : <BlockIcon className="w-5 h-5" />}
             </IconButton>,
         ],
     };
 
     return (
         <DataGrid
+            loading={isLoading}
             className="w-full"
             rows={rows}
-            columns={[...AdminColumns, ActionsCell]}
+            columns={[...adminColumns, ActionsCell]}
             onSelectionModelChange={onSelectionChange}
             pageSize={25}
             rowsPerPageOptions={[25]}

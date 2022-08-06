@@ -1,11 +1,11 @@
-import axios from 'axios';
+import a from 'axios';
 
-import { ErrorDto } from './models/error-dto';
+import { ErrorDto } from './models/ErrorDto';
 import snackbar from './snackbar';
 
-const axiosApi = axios.create({ baseURL: `/api` });
+const axios = a.create({ baseURL: `/api` });
 
-axiosApi.interceptors.response.use(
+axios.interceptors.response.use(
     (response) => response.data,
     (err) => {
         const errorDto: ErrorDto = err.response.data;
@@ -17,4 +17,4 @@ axiosApi.interceptors.response.use(
     }
 );
 
-export default axiosApi;
+export default axios;

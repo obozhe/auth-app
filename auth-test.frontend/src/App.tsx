@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import Background from './core/components/background/background';
-import ContainerWithHeader from './core/containers/container-with-header';
-import AdminRoutes from './modules/admin-page/routes';
-import HomePage from './modules/home-page/containers/home-page';
+import Background from './core/components/background/Background';
+import ContainerWithHeader from './core/containers/ContainerWithHeader';
+import AdminRoutes from './modules/admin/routes';
+import HomePage from './modules/home/containers/HomePage';
 import UserRoutes from './modules/user/routes';
-import UserApi from './modules/user/services/user-api';
+import UserApi from './modules/user/services/api/UserApi';
 import { CatSpinner } from './shared/components/CatSpinner/CatSpinner';
 import GuardedRoute from './shared/components/GuardedRoute';
 import { RootState } from './store/store';

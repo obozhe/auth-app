@@ -8,7 +8,6 @@ interface UserDto {
     role: Roles;
     lastLogin: string;
     createdAt: string;
-    banned?: boolean;
 }
 
 export { UserDto };

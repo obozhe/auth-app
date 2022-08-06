@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import Input from '../../../../shared/components/Input';
-import { AuthenticationProps } from '../../consts/authentication-props';
-import { SignInFormData } from '../../models/form-data';
-import UserApi from '../../services/user-api';
-import { PasswordField } from '../form-fields';
+import { AuthenticationProps } from '../../consts/AuthenticationProps';
+import { SignInFormData } from '../../models/FormData';
+import UserApi from '../../services/api/UserApi';
+import { PasswordField } from '../Form-Fields';
 
 const SignupSchema = Yup.object().shape({
     [AuthenticationProps.Email]: Yup.string().max(255).email('Invalid email').required('Email is required'),

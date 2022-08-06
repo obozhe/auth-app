@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-import Header from '../components/header';
+import Header from '../components/Header';
 
 const ContainerWithHeader = ({ children }: { children: ReactElement }) => (
     <div className="w-screen h-screen grid grid-rows-[auto_1fr]">
