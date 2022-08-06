@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import IconButton from '@mui/material/IconButton';
 import React, { useState } from 'react';
 
-import Input from '../../../shared/components/input';
+import Input from '../../../shared/components/Input';
 import { AuthenticationProps } from '../consts/authentication-props';
 
 type Props = {

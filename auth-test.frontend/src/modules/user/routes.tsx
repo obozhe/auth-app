@@ -1,6 +1,6 @@
 import { Navigate, Route } from 'react-router-dom';
 
-import GuardedRoute from '../../shared/components/guarded-route';
+import GuardedRoute from '../../shared/components/GuardedRoute';
 import SignInPage from './containers/sign-in-page';
 import SignUpPage from './containers/sign-up-page';
 import VerificationMailSentPage from './containers/verification-mail-sent-page';

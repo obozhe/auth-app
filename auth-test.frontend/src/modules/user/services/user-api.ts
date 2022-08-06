@@ -17,12 +17,6 @@ const verify = (userId: string, token: string) =>
 
 const fetchUser = () => axiosApi.get<UserDto, UserDto>(`/user`).then((user) => store.dispatch(setUser(user)));
 
-const getUsersList = () => axiosApi.get<UserDto[], UserDto[]>(`/user/list`);
-
-const deleteUsers = (ids: string[]) => axiosApi.put<UserDto[], UserDto[]>(`/user/deleteMany`, ids);
-
-const banUsers = (ids: string[]) => axiosApi.put<UserDto[], UserDto[]>(`/user/banMany`, ids);
-
-const UserApi = { signIn, signOut, signUp, fetchUser, deleteUsers, getUsersList, verify, banUsers };
+const UserApi = { signIn, signOut, signUp, fetchUser, verify };
 
 export default UserApi;

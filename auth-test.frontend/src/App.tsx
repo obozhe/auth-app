@@ -9,8 +9,8 @@ import AdminRoutes from './modules/admin-page/routes';
 import HomePage from './modules/home-page/containers/home-page';
 import UserRoutes from './modules/user/routes';
 import UserApi from './modules/user/services/user-api';
-import { CatSpinner } from './shared/components/cat-spinner/cat-spinner';
-import GuardedRoute from './shared/components/guarded-route';
+import { CatSpinner } from './shared/components/CatSpinner/CatSpinner';
+import GuardedRoute from './shared/components/GuardedRoute';
 import { RootState } from './store/store';
 
 const theme = createTheme({

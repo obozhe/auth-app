@@ -1,4 +1,4 @@
-import './cat-spinner.scss';
+import './CatSpinner.scss';
 
 export const CatSpinner = () => (
     <div className="cat">

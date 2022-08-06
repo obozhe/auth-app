@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom';
 
 import ContainerWithHeader from '../../core/containers/container-with-header';
-import GuardedRoute from '../../shared/components/guarded-route';
+import GuardedRoute from '../../shared/components/GuardedRoute';
 import { isAdmin } from '../user/helpers/user.helper';
 import { UserDto } from '../user/models/user';
 import AdminPage from './containers/admin-page';

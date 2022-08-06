@@ -2,20 +2,16 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import express, { RequestHandler } from 'express';
 import moment from 'moment';
-import { Types } from 'mongoose';
 import { MailOptions } from 'nodemailer/lib/smtp-transport';
 
 import { Roles } from '../core/consts/roles';
 import { UserDto } from '../core/models/user';
-import { BannedUserModel } from '../database/models/banned-user';
 import { IUser, UserModel } from '../database/models/user';
 import { IUserVerificationToken, UserVerificationTokenModel } from '../database/models/user-verification-token';
 import { AuthErrorCodes } from '../error/consts/error-codes';
 import { ApiError403 } from '../error/models/client-errors';
 import {
-    checkAdminPermissions,
     checkBannedList,
-    checkBasicPermissions,
     checkPasswordValidity,
     convertUserToDto,
     createJWTToken,
@@ -97,24 +93,6 @@ const verify: RequestHandler = async (req, res, next) => {
     }
 };
 
-const remove: RequestHandler = async (req, res, next) => {
-    try {
-        await UserModel.deleteMany({ _id: { $in: req.body } });
-        return res.status(200).send();
-    } catch (e) {
-        next(e);
-    }
-};
-
-const ban: RequestHandler = async (req, res, next) => {
-    try {
-        await BannedUserModel.create(req.body.map((id: string) => ({ user: new Types.ObjectId(id) })));
-        return res.status(200).send();
-    } catch (e) {
-        next(e);
-    }
-};
-
 const logout: RequestHandler = (req, res, next) => {
     try {
         decodeJWTToken(req.cookies.jwt);
@@ -131,39 +109,6 @@ const getCurrentUser: RequestHandler = (req, res, next) => {
         if (user) {
             res.status(200).json(user);
         }
-    } catch (e) {
-        next(e);
-    }
-};
-
-const getUserList: RequestHandler = async (req, res, next) => {
-    try {
-        const users: IUser[] = await UserModel.find();
-        return res.status(200).json(users.map(convertUserToDto));
-    } catch (e) {
-        next(e);
-    }
-};
-
-const isAdmin: RequestHandler = async (req, res, next) => {
-    const token: string = req.cookies.jwt;
-    try {
-        const user: UserDto = decodeJWTToken(token);
-        await checkBannedList(user.email);
-        checkAdminPermissions(user.role);
-        next();
-    } catch (e) {
-        next(e);
-    }
-};
-
-const isUser: RequestHandler = async (req, res, next) => {
-    const token: string = req.cookies.jwt;
-    try {
-        const user: UserDto = decodeJWTToken(token);
-        await checkBannedList(user.email);
-        checkBasicPermissions(user.role);
-        next();
     } catch (e) {
         next(e);
     }
@@ -196,17 +141,5 @@ const createUserMock = async (count: number) => {
     }
 };
 
-export {
-    login,
-    logout,
-    create,
-    verify,
-    remove,
-    ban,
-    getCurrentUser,
-    getUserList,
-    isUser,
-    isAdmin,
-    createAdmin,
-    createUserMock,
-};
+const UserController = { login, logout, create, verify, getCurrentUser, createAdmin, createUserMock };
+export default UserController;

@@ -1,14 +1,16 @@
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import BlockIcon from '@mui/icons-material/Block';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Paper, Tooltip } from '@mui/material';
 import Button from '@mui/material/Button';
 import React, { useEffect, useState } from 'react';
 
-import { CatSpinner } from '../../../shared/components/cat-spinner/cat-spinner';
+import { CatSpinner } from '../../../shared/components/CatSpinner/CatSpinner';
+import IconButton from '../../../shared/components/IconButton';
 import { UserDto } from '../../user/models/user';
-import UserApi from '../../user/services/user-api';
-import userApi from '../../user/services/user-api';
+import AdminApi from '../services/admin-api';
 import AdminTable from './components/admin-table';
 
 const AdminPage = () => {
@@ -22,45 +24,46 @@ const AdminPage = () => {
 
     const fetchUsers = () => {
         setIsLoading(true);
-        UserApi.getUsersList()
+        AdminApi.getUsers()
             .then((users: UserDto[]) => setUsers(users))
             .finally(() => setIsLoading(false));
     };
 
     const deleteSelectedUsers = () => {
-        userApi.deleteUsers(selectedIds).then(() => fetchUsers());
+        setIsLoading(true);
+        AdminApi.deleteUsers(selectedIds).then(() => fetchUsers());
+    };
+
+    const banSelectedUsers = () => {
+        setIsLoading(true);
+        AdminApi.banUsers(selectedIds).then(() => fetchUsers());
     };
 
     return (
         <div className="w-full h-full p-4 grid grid-rows-[auto_1fr] gap-2">
             <Paper className="bg-soft-white shadow-xl p-2 flex justify-end">
-                <Tooltip placement="top" title="Delete Selected Users">
-                    <span>
-                        <Button
-                            color="error"
-                            className="square-icon-button mr-2"
-                            disabled={isLoading || !selectedIds.length}
-                            onClick={deleteSelectedUsers}
-                            variant="contained"
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                        </Button>
-                    </span>
-                </Tooltip>
+                <IconButton
+                    title="Delete Selected Users"
+                    className="mr-2"
+                    titlePlacement="top"
+                    color="error"
+                    disabled={isLoading || !selectedIds.length}
+                    onClick={deleteSelectedUsers}
+                    variant="contained"
+                >
+                    <DeleteForeverIcon />
+                </IconButton>
 
-                <Tooltip placement="top" title="Ban Selected Users">
-                    <span>
-                        <Button
-                            color="error"
-                            className="square-icon-button"
-                            disabled={isLoading || !selectedIds.length}
-                            onClick={deleteSelectedUsers}
-                            variant="contained"
-                        >
-                            <FontAwesomeIcon icon={faBan} />
-                        </Button>
-                    </span>
-                </Tooltip>
+                <IconButton
+                    title="Ban Selected Users"
+                    titlePlacement="top"
+                    color="error"
+                    disabled={isLoading || !selectedIds.length}
+                    onClick={banSelectedUsers}
+                    variant="contained"
+                >
+                    <BlockIcon />
+                </IconButton>
             </Paper>
 
             <Paper className="bg-soft-white shadow-xl h-full">
@@ -69,8 +72,9 @@ const AdminPage = () => {
                 ) : (
                     <AdminTable
                         rows={users}
-                        onDeleteUser={(id) => userApi.deleteUsers([id]).then(() => fetchUsers())}
-                        onBanUser={(id) => userApi.banUsers([id]).then(() => fetchUsers())}
+                        onDeleteUser={(id) => AdminApi.deleteUsers([id]).then(() => fetchUsers())}
+                        onBanUser={(id) => AdminApi.banUsers([id]).then(() => fetchUsers())}
+                        onUnBanUser={(id) => AdminApi.unBanUsers([id]).then(() => fetchUsers())}
                         onSelectionChange={(selectedIds) => setSelectedIds(selectedIds as string[])}
                     />
                 )}

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ErrorDto } from '../../../core/models/error-dto';
-import { CatSpinner } from '../../../shared/components/cat-spinner/cat-spinner';
+import { CatSpinner } from '../../../shared/components/CatSpinner/CatSpinner';
 import UserApi from '../services/user-api';
 
 const VerificationPage = () => {

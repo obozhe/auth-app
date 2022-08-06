@@ -1,19 +1,15 @@
 import express from 'express';
 
-import * as UserController from '../controllers/user-controller';
-import { isAdmin, isUser } from '../controllers/user-controller';
+import UserController from '../controllers/user-controller';
+import { isUser } from '../middlewares/user-role-check';
 
-const router = express.Router();
+const UserRouter = express.Router();
 
-router.route('/').get(isUser, UserController.getCurrentUser);
-router.route('/list').get(isAdmin, UserController.getUserList);
+UserRouter.route('/').get(isUser, UserController.getCurrentUser);
 
-router.route('/login').post(UserController.login);
-router.route('/logout').post(isUser, UserController.logout);
-router.route('/create').post(UserController.create);
-router.route('/verify').post(UserController.verify);
+UserRouter.route('/login').post(UserController.login);
+UserRouter.route('/logout').post(isUser, UserController.logout);
+UserRouter.route('/create').post(UserController.create);
+UserRouter.route('/verify').post(UserController.verify);
 
-router.route('/deleteMany').put(isAdmin, UserController.remove);
-router.route('/banMany').put(isAdmin, UserController.ban);
-
-export default router;
+export default UserRouter;

@@ -4,7 +4,7 @@ import { Formik, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
-import Input from '../../../../shared/components/input';
+import Input from '../../../../shared/components/Input';
 import { AuthenticationProps } from '../../consts/authentication-props';
 import { SignUpFormData } from '../../models/form-data';
 import UserApi from '../../services/user-api';

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { UserRoles } from '../../modules/user/consts/user-roles';
 import UserApi from '../../modules/user/services/user-api';
-import Avatar from '../../shared/components/avatar';
+import Avatar from '../../shared/components/Avatar';
 import { RootState } from '../../store/store';
 
 const Header = () => {

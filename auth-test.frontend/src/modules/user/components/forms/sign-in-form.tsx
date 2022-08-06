@@ -5,7 +5,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import Input from '../../../../shared/components/input';
+import Input from '../../../../shared/components/Input';
 import { AuthenticationProps } from '../../consts/authentication-props';
 import { SignInFormData } from '../../models/form-data';
 import UserApi from '../../services/user-api';
