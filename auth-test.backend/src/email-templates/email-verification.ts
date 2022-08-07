@@ -381,7 +381,7 @@ const emailVerification = (link: string) => `<!doctype html>
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block powered-by">
-                    OBOZHE.
+                    OBOZHE
                   </td>
                 </tr>
               </table>
