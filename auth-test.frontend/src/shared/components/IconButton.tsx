@@ -43,7 +43,6 @@ const IconButton = ({
                 color={color}
                 variant={variant}
                 onClick={(e) => {
-                    e.stopPropagation();
                     onClick && onClick(e);
                 }}
             >

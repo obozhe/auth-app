@@ -7,6 +7,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import UserPaths from '../../../modules/user/consts/UserPaths';
 import { fullName } from '../../../modules/user/helpers/user.helper';
 import UserApi from '../../../modules/user/services/api/UserApi';
 import { RootState } from '../../../store/store';
@@ -35,7 +36,7 @@ const UserActions = () => {
             key="logout"
             onClick={() => {
                 UserApi.signOut().then(() => {
-                    navigate('/user/sign-in');
+                    navigate(UserPaths.SignIn);
                     setOpen(false);
                 });
             }}
@@ -50,7 +51,7 @@ const UserActions = () => {
             className="text-gray-blue"
             key="login"
             onClick={() => {
-                navigate('/user/sign-in');
+                navigate(UserPaths.SignIn);
                 setOpen(false);
             }}
         >

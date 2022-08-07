@@ -4,6 +4,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { AdminPaths } from '../../modules/admin/consts/AdminPaths';
 import { isAdmin } from '../../modules/user/helpers/user.helper';
 import { RootState } from '../../store/store';
 import IconButton from '../components/IconButton';
@@ -22,7 +23,7 @@ const Header = () => {
                 </div>
                 <div className="flex justify-between items-center">
                     {isAdmin(user) && (
-                        <Link to="/admin">
+                        <Link to={AdminPaths.Users}>
                             <IconButton title="Admin page" className="w-10 h-10 mr-1 text-gray-blue">
                                 <FontAwesomeIcon size="lg" icon={faCrown} />
                             </IconButton>
