@@ -6,9 +6,9 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 import './assets/styles/index.scss';
-import { SnackbarConfigurator } from './core/snackbar';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { SnackbarConfigurator } from './shared/snackbar';
 import { store } from './store/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

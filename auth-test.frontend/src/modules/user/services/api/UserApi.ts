@@ -1,4 +1,4 @@
-import axios from '../../../../core/axiosHTTPInterceptor';
+import axios from '../../../../shared/axiosHTTPInterceptor';
 import { store } from '../../../../store/store';
 import { SignInFormData, SignUpFormData } from '../../models/FormData';
 import { UserDto } from '../../models/User';

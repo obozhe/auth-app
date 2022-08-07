@@ -2,14 +2,16 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import express, { RequestHandler } from 'express';
 import moment from 'moment';
+import { Types } from 'mongoose';
 import { MailOptions } from 'nodemailer/lib/smtp-transport';
 
 import { Roles } from '../core/consts/roles';
 import { UserDto } from '../core/models/user';
 import { IUser, UserModel } from '../database/models/user';
 import { IUserVerificationToken, UserVerificationTokenModel } from '../database/models/user-verification-token';
+import emailVerification from '../email-templates/email-verification';
 import { AuthErrorCodes } from '../error/consts/error-codes';
-import { ApiError403 } from '../error/models/client-errors';
+import { ApiError403, ApiError404 } from '../error/models/client-errors';
 import {
     checkBannedList,
     checkPasswordValidity,
@@ -29,7 +31,13 @@ type RegisterForm = {
     firstName: string;
 };
 
-const authorizeUser = async (res: express.Response, user: IUser): Promise<void> => {
+const authorizeUser = async (res: express.Response, userId: Types.ObjectId): Promise<void> => {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+        throw new ApiError404(AuthErrorCodes.USER_NOT_FOUND);
+    }
+
     if (!user.verified) {
         throw new ApiError403(AuthErrorCodes.EMAIL_IS_NOT_VERIFIED);
     }
@@ -47,10 +55,10 @@ const login: RequestHandler = async (req, res, next) => {
     const formData: LoginForm = req.body;
 
     try {
-        await checkBannedList(formData.email);
-        const user: IUser = await findUserByEmail(formData.email);
+        await checkBannedList(formData.email.toLowerCase());
+        const user: IUser = await findUserByEmail(formData.email.toLowerCase());
         await checkPasswordValidity(formData.password, user.password);
-        await authorizeUser(res, user);
+        await authorizeUser(res, user._id);
     } catch (e) {
         next(e);
     }
@@ -59,9 +67,13 @@ const login: RequestHandler = async (req, res, next) => {
 const create: RequestHandler = async (req, res, next) => {
     const formData: RegisterForm = req.body;
     try {
-        await checkBannedList(formData.email);
+        await checkBannedList(formData.email.toLowerCase());
         const hash: string = await bcrypt.hash(formData.password, 10);
-        const user: IUser = await UserModel.create({ ...formData, password: hash });
+        const user: IUser = await UserModel.create({
+            ...formData,
+            email: formData.email.toLowerCase(),
+            password: hash,
+        });
 
         const token: IUserVerificationToken = await UserVerificationTokenModel.create({
             userId: user._id,
@@ -71,7 +83,7 @@ const create: RequestHandler = async (req, res, next) => {
         const options: MailOptions = {
             to: user.email,
             subject: 'Email Verification',
-            html: `<p>Click <a href="http://${process.env.BASE_URL}/user/verify/${user._id}/${token.token}">here</a> to verify your email</p>`,
+            html: emailVerification(`http://${process.env.BASE_URL}/user/verify/${user._id}/${token.token}`),
         };
 
         await MailerController.send(options);
@@ -87,7 +99,7 @@ const verify: RequestHandler = async (req, res, next) => {
         const { user, verificationToken } = await validateUserByToken(userId, token);
         await UserModel.updateOne({ _id: user._id }, { verified: true });
         await UserVerificationTokenModel.findByIdAndRemove(verificationToken._id);
-        await authorizeUser(res, user);
+        await authorizeUser(res, userId);
     } catch (e) {
         next(e);
     }

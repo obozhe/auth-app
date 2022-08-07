@@ -10,5 +10,4 @@ const stringAvatar = (name: string) => ({
 const Avatar = ({ fullName, variant }: { fullName: string; variant?: 'square' | 'circular' | 'rounded' }) => (
     <MuiAvatar variant={variant} {...stringAvatar(fullName)} />
 );
-
 export default Avatar;

@@ -1,7 +1,7 @@
 import { Navigate, Route } from 'react-router-dom';
 
-import ContainerWithHeader from '../../core/containers/ContainerWithHeader';
 import GuardedRoute from '../../shared/components/GuardedRoute';
+import ContainerWithHeader from '../../shared/containers/ContainerWithHeader';
 import { isAdmin } from '../user/helpers/user.helper';
 import { UserDto } from '../user/models/User';
 import { AdminPaths } from './consts/AdminPaths';

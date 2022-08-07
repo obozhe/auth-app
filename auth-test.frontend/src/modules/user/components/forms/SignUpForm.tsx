@@ -6,6 +6,7 @@ import * as yup from 'yup';
 
 import Input from '../../../../shared/components/Input';
 import { AuthenticationProps } from '../../consts/AuthenticationProps';
+import UserPaths from '../../consts/UserPaths';
 import { SignUpFormData } from '../../models/FormData';
 import UserApi from '../../services/api/UserApi';
 import { PasswordField } from '../Form-Fields';
@@ -34,7 +35,7 @@ const SignupSchema = yup.object().shape({
 const SignUpForm = () => {
     const navigate = useNavigate();
     const signUp = (formData: SignUpFormData) =>
-        UserApi.signUp(formData).then(() => navigate('../email-verification-is-sent'));
+        UserApi.signUp(formData).then(() => navigate(UserPaths.VerificationSent));
 
     return (
         <Formik

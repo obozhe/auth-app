@@ -1,7 +1,7 @@
 import { GridColDef, GridValueFormatterParams } from '@mui/x-data-grid';
 
-import { DateFormats } from '../../../core/consts/DateFormats';
-import { formatDate } from '../../../core/helpers/dateTime.helper';
+import { DateFormats } from '../../../shared/consts/DateFormats';
+import { formatDate } from '../../../shared/helpers/dateTime.helper';
 
 const adminColumns: GridColDef[] = [
     { field: 'email', headerName: 'Email', flex: 1, minWidth: 250 },

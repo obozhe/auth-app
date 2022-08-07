@@ -3,14 +3,13 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import Background from './core/components/background/Background';
-import ContainerWithHeader from './core/containers/ContainerWithHeader';
 import AdminRoutes from './modules/admin/routes';
 import HomePage from './modules/home/containers/HomePage';
 import UserRoutes from './modules/user/routes';
 import UserApi from './modules/user/services/api/UserApi';
+import Background from './shared/components/Background/Background';
 import { CatSpinner } from './shared/components/CatSpinner/CatSpinner';
-import GuardedRoute from './shared/components/GuardedRoute';
+import ContainerWithHeader from './shared/containers/ContainerWithHeader';
 import { RootState } from './store/store';
 
 const theme = createTheme({
@@ -42,11 +41,9 @@ function App() {
                         <Route
                             path=""
                             element={
-                                <GuardedRoute isAllowed={!!user} redirectTo="/user">
-                                    <ContainerWithHeader>
-                                        <HomePage />
-                                    </ContainerWithHeader>
-                                </GuardedRoute>
+                                <ContainerWithHeader>
+                                    <HomePage />
+                                </ContainerWithHeader>
                             }
                         />
                         <Route path="admin">{AdminRoutes(user)}</Route>

@@ -4,9 +4,9 @@ import { Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import TableOptionsDto from '../../../core/models/TableOptionsDto';
 import IconButton from '../../../shared/components/IconButton';
 import NavTabs from '../../../shared/components/NavTabs';
+import TableOptionsDto from '../../../shared/models/TableOptionsDto';
 import { UserDto } from '../../user/models/User';
 import AdminTable from '../components/AdminTable';
 import { AdminPaths } from '../consts/AdminPaths';

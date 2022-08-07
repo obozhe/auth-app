@@ -1,5 +1,5 @@
-import axios from '../../../../core/axiosHTTPInterceptor';
-import TableOptionsDto from '../../../../core/models/TableOptionsDto';
+import axios from '../../../../shared/axiosHTTPInterceptor';
+import TableOptionsDto from '../../../../shared/models/TableOptionsDto';
 import { UserDto } from '../../../user/models/User';
 
 export default abstract class AdminApi {

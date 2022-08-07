@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 const VerificationPage = () => (
-    <div className="w-fit h-fit flex flex-col justify-center items-center text-white m-auto  rounded-md p-2">
+    <div className="w-fit h-full flex flex-col justify-center items-center text-white m-auto p-2">
         <div className=" rounded-md text-success p-4 bg-soft-white shadow-xl">
             <div className="grid grid-cols-[auto_auto] gap-4 items-center">
                 <FontAwesomeIcon size="3x" icon={faEnvelopeCircleCheck} />

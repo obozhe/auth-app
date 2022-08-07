@@ -3,31 +3,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { ErrorDto } from '../../../core/models/ErrorDto';
 import { CatSpinner } from '../../../shared/components/CatSpinner/CatSpinner';
+import { ErrorDto } from '../../../shared/models/ErrorDto';
 import UserApi from '../services/api/UserApi';
 
 const VerificationPage = () => {
-    const { userId, token } = useParams();
+    const { userId = '', token = '' } = useParams();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<ErrorDto | null>(null);
 
     useEffect(() => {
-        if (!userId || !token) {
-            navigate('/', { replace: true });
-        } else {
-            UserApi.verify(userId, token)
-                .then(() => setTimeout(() => navigate('/', { replace: true }), 3000))
-                .catch((e) => setError(e))
-                .finally(() => setIsLoading(false));
-        }
+        UserApi.verify(userId, token)
+            .then(() => setTimeout(() => navigate('/', { replace: true }), 3000))
+            .catch((e) => setError(e))
+            .finally(() => setIsLoading(false));
     }, []);
 
     return isLoading ? (
         <CatSpinner />
     ) : (
-        <div className="w-full flex flex-col justify-center items-center text-white">
+        <div className="w-full h-full flex flex-col justify-center items-center text-white">
             <div className={`p-4 rounded-xl  shadow-xl text-soft-white ${error ? 'bg-error' : 'bg-success'}`}>
                 <div className="grid grid-cols-[auto_auto] gap-4 items-center">
                     <FontAwesomeIcon size="3x" icon={error ? faXmarkCircle : faCheckCircle} />
