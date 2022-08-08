@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
+import crypto, { randomUUID } from 'crypto';
 import express, { RequestHandler } from 'express';
 import moment from 'moment';
 import { Types } from 'mongoose';
@@ -141,16 +141,17 @@ const createAdmin = async () => {
 
 const createUserMock = async (count: number) => {
     const hash = await bcrypt.hash('password', 10);
-    for (let i = 0; i < count; i++) {
-        await UserModel.create({
-            firstName: 'Narek',
-            lastName: 'Avagian',
-            role: Roles.Basic,
-            email: Math.round(10000 - 0.5 + Math.random() * (10000000 - 10000 + 1)) + '_user@g.com',
-            password: hash,
-            verified: true,
-        });
-    }
+
+    const users = new Array(count).fill(undefined).map(() => ({
+        firstName: 'Narek',
+        lastName: 'Avagian',
+        role: Roles.Basic,
+        email: randomUUID() + '@g.com',
+        password: hash,
+        verified: true,
+    }));
+
+    await UserModel.create(users);
 };
 
 const UserController = { login, logout, create, verify, getCurrentUser, createAdmin, createUserMock };

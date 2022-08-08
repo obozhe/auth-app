@@ -15,7 +15,7 @@ import UserRoutes from './routes/user';
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = 5050;
 
 connectDB();
 
@@ -35,8 +35,11 @@ app.listen(port, () => {
 //     await UserVerificationTokenModel.deleteMany({});
 //     await BannedUserModel.deleteMany({});
 // })();
-// UserController.createAdmin();
-// UserController.createUserMock(100);
+//
+// (async () => {
+//     await UserController.createAdmin();
+//     await UserController.createUserMock(100);
+// })();
 
 process.on('uncaughtException', (error) => {
     logError(error);
